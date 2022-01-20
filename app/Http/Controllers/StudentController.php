@@ -17,11 +17,13 @@ class StudentController extends Controller
 				'message' => 'Get all students',
 				'data' => $students,
 			];
+
 			return response()->json($response, 200);
 		} else {
 			$response = [
-				'message' => 'Data is Empty'
+				'message' => 'Data not found'
 			];
+
 			return response()->json($response, 200);
 		}
 	}
@@ -46,13 +48,63 @@ class StudentController extends Controller
 		return response()->json($response, 201);
 	}
 
-	public function update()
+	public function show($id) 
 	{
-		
+		$student = Student::find($id);
+
+		if ($student) {
+			$response = [
+				'message' => 'Get detail student',
+				'data' => $student
+			];
+	
+			return response()->json($response, 200);
+		} else {
+			$response = [
+				'message' => 'Data not found'
+			];
+			
+			return response()->json($response, 404);
+		}
 	}
 
-	public function destroy()
+	public function update(Request $request, $id)
 	{
+		$student = Student::find($id);
 
+		if ($student) {
+			$response = [
+				'message' => 'Student is updated',
+				'data' => $student->update($request->all())
+			];
+	
+			return response()->json($response, 200);
+		} else {
+			$response = [
+				'message' => 'Data not found'
+			];
+
+			return response()->json($response, 404);
+		}
+	}
+
+	public function destroy($id)
+	{
+		$student = Student::find($id);
+
+		if ($student) {
+			$response = [
+				'message' => 'Student is delete',
+				'data' => $student->delete()
+			];
+
+			return response()->json($response, 200); 
+		} else {
+			$response = [
+				'message' => 'Data not found'
+			];
+
+			return response()->json($response, 404);
+		}
 	}
 }
